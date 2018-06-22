@@ -8,30 +8,20 @@ buildscript {
 
     repositories {
         jcenter()
+        google()
         maven { url 'https://plugins.gradle.org/m2/' }
     }
     dependencies {
         // See dependencies.gradle for declaration of plugins.
 
-        classpath gradlePlugins.android
+        classpath 'com.android.tools.build:gradle:3.1.0'
 
-        // Compile-time annotation processing.
-        classpath gradlePlugins.apt
-
-        // Backport of some Java 8 language features such as Lambdas and method references.
-        classpath gradlePlugins.retrolambda
-
-        // Needed for Lint + Retrolambda.
-        classpath gradlePlugins.lombok
 
         // Code coverage.
         classpath gradlePlugins.jacoco
 
         // Performance metrics library for Android development.
         classpath gradlePlugins.androidDevMetrics
-
-        // Catches common Java mistakes as compile-time errors.
-        classpath gradlePlugins.errorProne
 
         // Method count plugin for android projects
         classpath gradlePlugins.dexcount
@@ -67,12 +57,6 @@ subprojects {
             // enable or disable pre-dexing
             project.android.dexOptions.preDexLibraries = rootProject.ext.preDexLibs
         }
-    }
-
-    project.plugins.apply('net.ltgt.errorprone')
-
-    configurations.errorprone {
-        resolutionStrategy.force "com.google.errorprone:error_prone_core:${versions.errorProneCoreVersion}"
     }
 
     afterEvaluate {
