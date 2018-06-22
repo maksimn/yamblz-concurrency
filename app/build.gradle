@@ -83,6 +83,7 @@ android {
 // Libraries declared in dependencies.gradle in the root of the project
 dependencies {
     compile libraries.dagger
+    annotationProcessor libraries.daggerCompiler
 
     compile libraries.supportAnnotations
     compile libraries.supportAppCompat
@@ -91,6 +92,7 @@ dependencies {
     compile libraries.supportCardView
 
     compile libraries.butterKnife
+    annotationProcessor libraries.butterKnifeCompiler
 
     compile libraries.timber
 
