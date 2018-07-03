@@ -40,8 +40,13 @@ ext.versions = [
 ]
 
 ext.gradlePlugins = [
+        android          : "com.android.tools.build:gradle:$versions.androidGradlePlugin",
+        apt              : "com.neenbedankt.gradle.plugins:android-apt:$versions.aptGradlePlugin",
+        retrolambda      : "me.tatarka:gradle-retrolambda:$versions.retrolambdaGradlePlugin",
+        lombok           : "me.tatarka.retrolambda.projectlombok:lombok.ast:$versions.lombokGradlePlugin",
         jacoco           : "org.jacoco:org.jacoco.core:$versions.jacocoGradlePlugin",
         androidDevMetrics: "com.frogermcs.androiddevmetrics:androiddevmetrics-plugin:$versions.androidDevMetricsGradlePlugin",
+        errorProne       : "net.ltgt.gradle:gradle-errorprone-plugin:$versions.errorProneVersion",
         dexcount         : "com.getkeepsafe.dexcount:dexcount-gradle-plugin:$versions.dexcountPlugin",
         versions         : "com.github.ben-manes:gradle-versions-plugin:$versions.versionsGradlePlugin",
 ]

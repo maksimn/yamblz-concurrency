@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
+apply plugin: 'me.tatarka.retrolambda'
 apply from: '../code_quality_tools/jacoco.gradle'
-apply plugin: 'com.frogermcs.androiddevmetrics'
 apply from: '../code_quality_tools/quality.gradle'
 apply plugin: 'com.github.ben-manes.versions'
 
 android {
     // Declared in dependencies.gradle in the root of the project.
     compileSdkVersion versions.compileSdk
-    buildToolsVersion versions.buildTools
+    buildToolsVersion '27.0.3'
 
     defaultConfig {
         applicationId 'ru.yandex.yamblz'
