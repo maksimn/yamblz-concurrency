@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.concurrent.CountDownLatch;
 
 import butterknife.BindView;
 import ru.yandex.yamblz.R;
@@ -35,10 +36,16 @@ public class ContentFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        new PostConsumer(this::postFinish).start();
+        CountDownLatch latch = new CountDownLatch(PRODUCERS_COUNT);
+
+        new PostConsumer(this, latch, this::postFinish).start();
         for (int i = 0; i < PRODUCERS_COUNT; i++) {
-            new LoadProducer(dataResults, this::postResult);
+            new LoadProducer(this, latch, dataResults, this::postResult).start();
         }
+    }
+
+    public void runOnUiThread(Runnable runnable) {
+        runOnUiThreadIfFragmentAlive(runnable);
     }
 
     final void postResult() {

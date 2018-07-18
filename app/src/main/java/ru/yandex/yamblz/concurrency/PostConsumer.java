@@ -2,6 +2,10 @@ package ru.yandex.yamblz.concurrency;
 
 import android.support.annotation.NonNull;
 
+import java.util.concurrent.CountDownLatch;
+
+import ru.yandex.yamblz.ui.fragments.ContentFragment;
+
 /**
  * Simple result consumer thread; non-extensible
  *
@@ -11,9 +15,13 @@ import android.support.annotation.NonNull;
 public final class PostConsumer extends Thread {
 
     @NonNull private final Runnable onFinish;
+    private final CountDownLatch latch;
+    private final ContentFragment context;
 
-    public PostConsumer(@NonNull Runnable onFinish) {
+    public PostConsumer(ContentFragment context, CountDownLatch latch, @NonNull Runnable onFinish) {
         this.onFinish = onFinish;
+        this.latch = latch;
+        this.context = context;
     }
 
     @Override
@@ -21,7 +29,13 @@ public final class PostConsumer extends Thread {
         super.run();
 
         /* Synchronize via concurrent mechanics */
+        try {
+            latch.await();
+        } catch (Exception e){
+        }
 
-        onFinish.run();
+        if (context != null) {
+            context.runOnUiThread(onFinish);
+        }
     }
 }
