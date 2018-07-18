@@ -38,27 +38,27 @@ public class ContentFragment extends BaseFragment {
         super.onResume();
         CountDownLatch latch = new CountDownLatch(PRODUCERS_COUNT);
 
-        new PostConsumer(this, latch, this::postFinish).start();
+        new PostConsumer(latch, this::postFinish).start();
         for (int i = 0; i < PRODUCERS_COUNT; i++) {
-            new LoadProducer(this, latch, dataResults, this::postResult).start();
+            new LoadProducer(latch, dataResults, this::postResult).start();
         }
-    }
-
-    public void runOnUiThread(Runnable runnable) {
-        runOnUiThreadIfFragmentAlive(runnable);
     }
 
     final void postResult() {
-        assert helloView != null;
-        helloView.setText(String.valueOf(dataResults.size()));
+        runOnUiThreadIfFragmentAlive(() -> {
+            assert helloView != null;
+            helloView.setText(String.valueOf(dataResults.size()));
+        });
     }
 
     final void postFinish() {
-        if (dataResults.size() < PRODUCERS_COUNT) {
-            throw new RuntimeException(CONSUME_EXCEPTION);
-        }
+        runOnUiThreadIfFragmentAlive(() -> {
+            if (dataResults.size() < PRODUCERS_COUNT) {
+                throw new RuntimeException(CONSUME_EXCEPTION);
+            }
 
-        assert helloView != null;
-        helloView.setText(R.string.task_win);
+            assert helloView != null;
+            helloView.setText(R.string.task_win);
+        });
     }
 }
